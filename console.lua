@@ -1,7 +1,10 @@
 assert(manager, "LuaInspector failed to initialize properly. Please make sure that the 'main.lua' file is running correctly.")
 local LogService = game:GetService("LogService");
 local env: table = getgenv()
+
 local tblInstance: table = {};
+local commandHistory: table = {};
+local lastCommandExecuted: string
 
 local old_tableRowBg: Instance = manager.ObjectCache["tablerowbgConsole"]:Clone()
 old_tableRowBg.value.Text="";
@@ -60,8 +63,11 @@ end;do
     end))
 end;
 
-env.filter(text: string)
+-- Filters the console to show only the text that matches the given string
+function env.filter(text: string)
     local console: Instance = manager.ObjectCache["ConsoleTable"]:GetChildren()
+
+    -- If there are multiple items in the table, remove them from the console and clear the table
     if #tblInstance > 1 then
         for _, path in pairs,tblInstance do
             path.Parent = nil;
@@ -70,15 +76,40 @@ env.filter(text: string)
         tblInstance: table = {};
     end;
 
-    for _,item in pairs(console)do
+    -- Loop through each item in the console
+    for _, item in pairs(console) do
         if item:IsA"GuiObject" then
             local textFrame: string = item:FindFirstChild("name")
 
-            if not textFrame.Text:find(text) --[[or textFrame.Color3 ~= C3_RGB(255, 255, 255)]] then
+            -- If the text in the item's text frame doesn't contain the given string, remove the item from the console
+            if not textFrame.Text:find(text) then
                 item.Parent = nil
             end;
+
+            -- Add the item to the table
             tinsert(tbl, item);
         end;
     end;
 end;
+
+function env.executeInput(input: string)
+    -- Add the command to the history
+    table.insert(commandHistory, input)
+
+    -- Try to execute the input using loadstring and pcall
+    local success, result = pcall(loadstring(input))
+    
+    -- Check if there was an error and display it on the screen using printToConsole
+    if not success then
+        env.printToConsole(tostring(result), Color3.fromRGB(255, 0, 0))
+    else
+        -- Store the executed command
+        lastCommandExecuted = input
+    end
+    
+    -- Return the result of the execution or nil in case of error
+    return success and result or nil
+end
+
+
 printToConsole("LuaInspector Loaded!")
