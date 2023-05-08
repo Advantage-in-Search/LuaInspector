@@ -1,43 +1,62 @@
-return {
-    Default = {
-        LuaInspector = {
-            Enabled = true,
-            Debug = false
-        },
-        HttpSpy = {
-            Enabled = true, 
-            Debug = false,
-            AntiDiscord = true,
-            AntiWebsocket = true,
-            AntiIpLogger = true,
-            Blacklist = {
-                "http://www.exemplo.com/",
-                "http://www.exemplo2.com/"
-            }
-        },
-        Console = {
-            Enabled = true, 
-            Output = true,
-            Debug = false, 
-            Commands = {
-                ["help"] = function()
-                    local commands = {
-                        "> help - Show this help message",
-                        "> clear - Clear the console",
-                        "> history - Show command history",
-                        "> Exit the console",
-                        "> script [name] - Load and execute a script",
-                        "> set [variable] [value] - Set the value of a variable",
-                        "> get [variable] - Get the value of a variable"
-                    }
-                    printToConsole("List of commands:")
-                    for _, command in pairs(commands) do
-                        printToConsole(command)
-                    end
-                end,
-                ["clear"] = clearConsole,
-                ["exit"] = manager.cleanupScriptEnv
-            }
+local default = {
+    LuaInspector = {
+        Enabled = true,
+        Debug = false
+    },
+    HttpSpy = {
+        Enabled = true, 
+        Debug = false,
+        AntiDiscord = true,
+        AntiWebsocket = true,
+        AntiIpLogger = true,
+        Blacklist = {
+            "http://www.exemplo.com/",
+            "http://www.exemplo2.com/"
         }
+    },
+    Console = {
+        Enabled = true, 
+        Output = true,
+        Debug = false, 
+        Commands = commands
+    }
+}
+
+commands = {
+    ["help"] = {
+        description = "Show this help message",
+        execute = function()
+            for command, info in pairs(commands) do
+                printToConsole(command .. " - " .. info.description)
+            end
+        end
+    },
+    ["clear"] = {
+        description = "Clear the console",
+        execute = clearConsole
+    },
+    ["history"] = {
+        description = "Show command history",
+        execute = function()
+        end
+    },
+    ["script"] = {
+        description = "Load and execute a script",
+        execute = function(scriptName)
+        end
+    },
+    ["set"] = {
+        description = "Set the value of a variable",
+        execute = function(variable, value)
+        end
+    },
+    ["get"] = {
+        description = "Get the value of a variable",
+        execute = function(variable)
+        end
+    },
+    ["exit"] = {
+        description = "Exit the console",
+        execute = manager.cleanupScriptEnv
     }
 }
