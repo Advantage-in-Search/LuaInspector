@@ -105,7 +105,6 @@ end;
 
 
 function env.executeInput(input: string)
-
     for command, exec in pairs(manager.default.commands) do
         if rawequal(command, input:lower()) then
             table.insert(commandHistory, input);

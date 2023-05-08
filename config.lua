@@ -65,7 +65,11 @@ function env.loadConfig(configFile: string)
 end;
 
 function env.saveConfig(config: table, configFile: string)
---  uma função que recebe o caminho do arquivo de configuração e carrega as configurações para uma tabela em Lua.
+    if not isfile(configFile) then
+        --[[uma função que recebe o caminho do arquivo de configuração e carrega
+        as configurações para uma tabela em Lua.]]
+        writefile(configFile,lib.serpent.format(config))
+    end;
 end;
 
 function env.getConfigValue(config: table, key: string)
