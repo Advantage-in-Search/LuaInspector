@@ -1,3 +1,21 @@
+--[[
+ANOTAÇÃO:
+executeInput, criar um filtro entre o que seria os comandos em
+config.lua e caso não seja comando registrado, executar como um
+loadstring para igornar qualquer efeito causado, dando mensagem
+de error semelhante a este:
+
+Input: print("Hello, World"),
+
+Console:
+>> print("Hello, World"),
+> asdIa:1: acabei esquecendo do erro
+
+Enfim, estou com sono e é isto, qualquer outra notação, vou me lembra.
+Caso me pergunte estou postando mas as coisas do github, pois posso
+modifica este projetos em outros lugares além da minha casa
+]]
+
 assert(manager, "LuaInspector failed to initialize properly. Please make sure that the 'main.lua' file is running correctly.")
 local LogService = game:GetService("LogService");
 local env: table = getgenv()
@@ -99,23 +117,5 @@ function env.executeInput(input: string)
     
     return success and result or nil
 end
-
---[[
-Anotação:
-executeInput, criar um filtro entre o que seria os comandos em
-config.lua e caso não seja comando registrado, executar como um
-loadstring para igornar qualquer efeito causado, dando mensagem
-de error semelhante a este:
-
-Input: print("Hello, World"),
-
-Console:
->> print("Hello, World"),
-> asdIa:1: acabei esquecendo do erro
-
-Enfim, estou com sono e é isto, qualquer outra notação, vou me lembra.
-Caso me pergunte estou postando mas as coisas do github, pois posso
-modifica este projetos em outros lugares além da minha casa
-]]
 
 printToConsole("LuaInspector Loaded!")
