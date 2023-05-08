@@ -92,6 +92,7 @@ function env.filter(text: string)
     end;
 end;
 
+
 function env.executeInput(input: string)
     -- Add the command to the history
     table.insert(commandHistory, input)
