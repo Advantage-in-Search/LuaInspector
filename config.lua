@@ -1,3 +1,4 @@
+local env: table = assert(getgenv, 'Your exploit is not supported')();
 local default = {
     LuaInspector = {
         Enabled = true,
@@ -60,3 +61,27 @@ commands = {
         execute = manager.cleanupScriptEnv
     }
 }
+
+function env.loadConfig(configFile: string)
+-- uma função que recebe o caminho do arquivo de configuração e carrega as configurações para uma tabela em Lua.
+end;
+
+function env.saveConfig(config: table, configFile: string)
+--  uma função que recebe o caminho do arquivo de configuração e carrega as configurações para uma tabela em Lua.
+end;
+
+function env.getConfigValue(config: table, key: string)
+--  uma função que recebe o caminho do arquivo de configuração e carrega as configurações para uma tabela em Lua.
+end;
+
+function env.setConfigValue(config: table, key: string, value: any)
+-- uma função que recebe a tabela de configuração, uma chave e um valor, e atualiza o valor correspondente na tabela.
+end;
+
+function env.getConfigList(): table
+--  Retorna uma tabela com os nomes de todas as configurações disponíveis.
+end;
+
+function env.deleteConfig(name: string)
+-- Exclui a tabela de configuração com o nome especificado.
+end;
