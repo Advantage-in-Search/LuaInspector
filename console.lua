@@ -113,7 +113,9 @@ Console:
 >> print("Hello, World"),
 > asdIa:1: acabei esquecendo do erro
 
-Enfim, estou com sono e é isto, qualquer outra notação, vou me lembra
+Enfim, estou com sono e é isto, qualquer outra notação, vou me lembra.
+Caso me pergunte estou postando mas as coisas do github, pois posso
+modifica este projetos em outros lugares além da minha casa
 ]]
 
 printToConsole("LuaInspector Loaded!")
