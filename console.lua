@@ -105,12 +105,22 @@ end;
 
 
 function env.executeInput(input: string)
-    table.insert(commandHistory, input)
 
+    for command, exec in pairs(manager.default.commands) do
+        if rawequal(command, input:lower()) then
+            table.insert(commandHistory, input);
+            local success, result = pcall(execute);
+            if not success then
+                printToConsole(tostring(result), C3_RGB(192, 64, 64));
+            end;
+            return
+        end;
+    end
+    
     local success, result = pcall(loadstring,input)
     
     if not success then
-        env.printToConsole(tostring(result), Color3.fromRGB(255, 0, 0))
+        printToConsole(tostring(result), C3_RGB(192, 64, 64))
     else
         lastCommandExecuted = input
     end
