@@ -1,4 +1,6 @@
 local env: table = assert(getgenv, 'Your exploit is not supported')();
+local directory: string = `LuaInspector/saved/custom/%s.lua`
+
 manager.default = {
     LuaInspector = {
         Enabled = true,
@@ -60,7 +62,9 @@ manager.default = {
 
 function env.loadConfig(configFile: string): boolean
     if isfile(configFile) then
-        env.getConfigCustom
+        local success: boolean, configTable: table = pcall(loadfile, directory:format(configFile));
+        env.getConfigCustom = success and configTable or manager.default
+        return success
     end;
 end;
 
@@ -72,18 +76,18 @@ function env.saveConfig(config: table, configFile: string): boolean
 end;
 
 function env.getConfigValue(configFile: table, key: string): string
-    if isfile(`LuaInspector/saved/custom/{configFile}.lua`) then
-        local success: boolean, configTable: table = pcall(loadfile, `LuaInspector/saved/custom/{configFile}.lua`);
+    if isfile( :format(configFile)) then
+        local success: boolean, configTable: table = pcall(loadfile, directory:format(configFile));
         return configTable[key]
     end;
 end;
 
 
 function env.setConfigValue(configFile: table, key: string, value: any)
-    if isfile(`LuaInspector/saved/custom/{configFile}.lua`) then
-        local success: boolean, configTable: table = pcall(loadfile, `LuaInspector/saved/custom/{configFile}.lua`);
+    if isfile(directory:format(configFile)) then
+        local success: boolean, configTable: table = pcall(loadfile, directory:format(configFile));
         configTable[key] = value;
-        writefile(`LuaInspector/saved/custom/{configFile}.lua`,serpent.format(configTable))
+        writefile(directory:format(configFile),serpent.format(configTable))
     end
 end;
 
@@ -92,14 +96,14 @@ function env.getConfigList(): table
     local folder: table = listfiles("LuaInspector/saved/custom");
     for _, path in pairs(folder) do
         local fileName = path:match(".*/(.-)%.lua$") 
-        table.insert(args, fileName)
+        tinsert(args, fileName)
     end
     return args
 end;
 
 function env.deleteConfig(name: string): boolean
-    if isfile(`LuaInspector/saved/custom/{name}.lua`) then
-        delfile(`LuaInspector/saved/custom/{name}.lua`);
+    if isfile(directory:format(name)) then
+        delfile(directory:format(name));
         return true;
     end;
 end;
