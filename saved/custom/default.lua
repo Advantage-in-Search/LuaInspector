@@ -1,5 +1,4 @@
-local env: table = assert(getgenv, 'Your exploit is not supported')();
-manager.default = {
+return {
     LuaInspector = {
         Enabled = true,
         Debug = false
@@ -57,49 +56,3 @@ manager.default = {
         }
     }
 }
-
-function env.loadConfig(configFile: string): boolean
-    if isfile(configFile) then
-        env.getConfigCustom
-    end;
-end;
-
-function env.saveConfig(config: table, configFile: string): boolean
-    if not isfile(configFile) then
-        writefile(configFile,serpent.format(config))
-        return true;
-    end;
-end;
-
-function env.getConfigValue(configFile: table, key: string): string
-    if isfile(`LuaInspector/saved/custom/{configFile}.lua`) then
-        local success: boolean, configTable: table = pcall(loadfile, `LuaInspector/saved/custom/{configFile}.lua`);
-        return configTable[key]
-    end;
-end;
-
-
-function env.setConfigValue(configFile: table, key: string, value: any)
-    if isfile(`LuaInspector/saved/custom/{configFile}.lua`) then
-        local success: boolean, configTable: table = pcall(loadfile, `LuaInspector/saved/custom/{configFile}.lua`);
-        configTable[key] = value;
-        writefile(`LuaInspector/saved/custom/{configFile}.lua`,serpent.format(configTable))
-    end
-end;
-
-function env.getConfigList(): table
-    local args: table = {};
-    local folder: table = listfiles("LuaInspector/saved/custom");
-    for _, path in pairs(folder) do
-        local fileName = path:match(".*/(.-)%.lua$") 
-        table.insert(args, fileName)
-    end
-    return args
-end;
-
-function env.deleteConfig(name: string): boolean
-    if isfile(`LuaInspector/saved/custom/{name}.lua`) then
-        delfile(`LuaInspector/saved/custom/{name}.lua`);
-        return true;
-    end;
-end;
