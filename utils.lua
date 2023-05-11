@@ -82,14 +82,6 @@ tbl.checkSupportedFeatures=newcclosure(function()
 	return true;
 end)
 
-tbl.generate_random_ip=newcclosure(function()
-    local ip: table = {}
-    for i=1,4 do
-        ip[i] = math.random(0, 255)
-    end
-    return table.concat(ip, ".")
-end)
-
 for name, func in next, tbl do
     env[name] = func
 end
