@@ -82,6 +82,15 @@ tbl.checkSupportedFeatures=newcclosure(function()
 	return true;
 end)
 
+tbl.tcomparetor=newcclosure(function(tbl: table, value: string)
+    for _, item in next, tbl do
+        if item==string then
+            return true;
+        end;
+    end;
+    return false;
+end);
+
 for name, func in next, tbl do
     env[name] = func
 end

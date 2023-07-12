@@ -533,6 +533,7 @@ return (function()
     G2L["31"]["ScrollBarImageColor3"] = Color3.fromRGB(80, 80, 80);
     G2L["31"]["ScrollBarThickness"] = 7;
     G2L["31"]["Position"] = UDim2.new(0, 0, 0, 27);
+    G2L["31"]["CanvasSize"] = UDim2.new(0, 0, 0, 0);
     G2L["31"]["Name"] = [[TreeNode]];
     G2L["31"]["BottomImage"] = [[rbxassetid://9772531965]];
 
@@ -2061,162 +2062,171 @@ return (function()
     G2L["bd"]["BackgroundTransparency"] = 1;
     G2L["bd"]["Position"] = UDim2.new(0.5, -8, 0.5, -8);
 
-    do  --Script Manager
-        assert(manager, "LuaInspector failed to initialize properly. Please make sure that the 'main.lua' file is running correctly.")
+	do  --Script Manager
+		assert(manager, "LuaInspector failed to initialize properly. Please make sure that the 'main.lua' file is running correctly.")
 
-        manager.ObjectCache["interface"] = G2L["1"]
-        G2L["1"].Parent = game:GetService("CoreGui");
+		manager.ObjectCache["interface"] = G2L["1"]
+		G2L["1"].Parent = game:GetService('CoreGui')
 
-        local GuiLib: {[string]: (table) -> nil} = {
-            custom_buttons_info = {};
-        }
+		local GuiLib: {[string]: (table) -> nil} = {
+			custom_buttons_info = {};
+		}
 
-        function GuiLib.create_Custom_Button(buttonInfo: GuiObject, leftClickFunc: () -> (), rightClickFunc: () -> ())
-            --Button Info
-            local buttonName: string = buttonInfo.name or buttonInfo
-            local button: GuiObject = G2L[buttonName]
-            local color: Color3 = buttonInfo.color or C3_RGB(66, 150, 250)
-            local colorT: Color3 = buttonInfo.t or 0.6
-            local frame: Frame = buttonInfo.frame or G2L[buttonName]         
-            local backGround: string = if frame:IsA("ImageLabel") or frame:IsA("ImageButton") then "ImageColor3" else "BackgroundColor3"
-            local backTransparency: string = if backGround == "ImageColor3" then "ImageTransparency" else "BackgroundTransparency"
+		function GuiLib.create_Custom_Button(buttonInfo: GuiObject, leftClickFunc: () -> (), rightClickFunc: () -> ())
+			--Button Info
+			local buttonName: string = buttonInfo.name or buttonInfo
+			local button: GuiObject = G2L[buttonName]
+			local color: Color3 = buttonInfo.color or C3_RGB(66, 150, 250)
+			local colorT: Color3 = buttonInfo.t or 0.6
+			local frame: Frame = buttonInfo.frame or G2L[buttonName]         
+			local backGround: string = if frame:IsA("ImageLabel") or frame:IsA("ImageButton") then "ImageColor3" else "BackgroundColor3"
+			local backTransparency: string = if backGround == "ImageColor3" then "ImageTransparency" else "BackgroundTransparency"
 
-            --Function
-            local clickFunc: (() -> ()) = rightClickFunc or leftClickFunc
+			--Function
+			local clickFunc: (() -> ()) = rightClickFunc or leftClickFunc
 
-            --Variable
-            local hasClickedButton: boolean = false
-            local isButtonClicked: boolean = false
-            local isMouseOver: boolean = false
+			--Variable
+			local hasClickedButton: boolean = false
+			local isButtonClicked: boolean = false
+			local isMouseOver: boolean = false
 
-            GuiLib.register_Hover_Event(button,function()
-                frame[backGround] = C3_RGB(66, 150, 250);
-                frame[backTransparency] = 0;
-                isMouseOver = true
+			GuiLib.register_Hover_Event(button,function()
+				frame[backGround] = C3_RGB(66, 150, 250);
+				frame[backTransparency] = 0;
+				isMouseOver = true
 
-                GuiLib.custom_buttons_info[buttonName]["isMouseOver"] = true;
-            end,function()
-                if not hasClickedButton then
-                    frame[backGround] = color;
-                    frame[backTransparency] = colorT;
-                end
-                isMouseOver = false
+				GuiLib.custom_buttons_info[buttonName]["isMouseOver"] = true;
+			end,function()
+				if not hasClickedButton then
+					frame[backGround] = color;
+					frame[backTransparency] = colorT;
+				end
+				isMouseOver = false
 
-                GuiLib.custom_buttons_info[buttonName]["isMouseOver"] = false;
-            end,function()
-                frame[backGround] = C3_RGB(15, 135, 250);
-                frame[backTransparency] = 0;
+				GuiLib.custom_buttons_info[buttonName]["isMouseOver"] = false;
+			end,function()
+				frame[backGround] = C3_RGB(15, 135, 250);
+				frame[backTransparency] = 0;
 
-                GuiLib.custom_buttons_info[buttonName]["hasClickedButton"] = true;
-                hasClickedButton = true
-            end,function()
-                if isMouseOver then
-                    frame[backGround] = C3_RGB(66, 150, 250);
-                    frame[backTransparency] = 0;
-                else
-                    frame[backGround] = color;
-                    frame[backTransparency] = colorT;
-                end
-                clickFunc()
-                GuiLib.custom_buttons_info[buttonName]["hasClickedButton"] = false;
-                hasClickedButton = false
-            end, rightClickFunc and "MouseButton2" or nil)
-        end;
+				GuiLib.custom_buttons_info[buttonName]["hasClickedButton"] = true;
+				hasClickedButton = true
+			end,function()
+				if isMouseOver then
+					frame[backGround] = C3_RGB(66, 150, 250);
+					frame[backTransparency] = 0;
+				else
+					frame[backGround] = color;
+					frame[backTransparency] = colorT;
+				end
+				clickFunc()
+				GuiLib.custom_buttons_info[buttonName]["hasClickedButton"] = false;
+				hasClickedButton = false
+			end, rightClickFunc and "MouseButton2" or nil)
+		end;
 
-        function GuiLib.create_Menu(menuInfo: {[string]: {instance: GuiObject, page: GuiObject}}, closeFunc: () -> (), selectedMenu: number?)
-            --Variable
-            local currentMenu: {instance: GuiObject, page: GuiObject} = menuInfo[selectedMenu] or menuInfo[1]
-            local hasClickedButton: boolean = false
-            local isButtonClicked: boolean = false
-            local isMouseOver: boolean = false
+		function GuiLib.create_Menu(menuInfo: {[string]: {instance: GuiObject, page: GuiObject}}, closeFunc: () -> (), selectedMenu: number?)
+			--Variable
+			local currentMenu: {instance: GuiObject, page: GuiObject} = menuInfo[selectedMenu] or menuInfo[1]
+			local hasClickedButton: boolean = false
+			local isButtonClicked: boolean = false
+			local isMouseOver: boolean = false
 
-            for key, value in pairs(menuInfo) do
-                local instance = value.instance
-                local page = value.page
-        
-                GuiLib.register_Hover_Event(instance.name,function()
-                    instance.ImageColor3 = C3_RGB(66, 150, 250);
-                    instance.ImageTransparency = 0;
-                    isMouseOver = true
-                    end,function()
-                    if not hasClickedButton then
-                        instance.ImageColor3 = if currentMenu==value then C3_RGB(52, 90, 174) else C3_RGB(66, 150, 250);
-                        instance.ImageTransparency = if currentMenu==value then 0 else 0.6;
-                    end
-                    isMouseOver = false
-                end,function()
-                    instance.ImageColor3 = C3_RGB(15, 135, 250);
-                    instance.ImageTransparency = 0;
-                    hasClickedButton = true
-                end,function()
-                    currentMenu = value
+			for key, value in pairs(menuInfo) do
+				local instance = value.instance
+				local page = value.page
 
-                    if isMouseOver then
-                        instance.ImageColor3 = C3_RGB(66, 150, 250);
-                        instance.ImageTransparency = 0;
-                    else
-                        instance.ImageColor3 = if currentMenu==value then C3_RGB(52, 90, 174) else C3_RGB(66, 150, 250);
-                        instance.ImageTransparency = if currentMenu==value then 0 else 0.6;
-                    end
-                    for key, valueTemp in pairs(menuInfo) do
-                        if currentMenu ~= valueTemp then
-                            valueTemp.instance.ImageColor3 = C3_RGB(66, 150, 250);
-                            valueTemp.instance.ImageTransparency = 0.6;
-                            valueTemp.page.Visible=false;
-                        end
-                    end;
-                    page.Visible = true;
-                    hasClickedButton = false
-                end)
-            end
-        end
-        
-        function GuiLib.register_Hover_Event(button: GuiObject, mouseEnterCallback: () -> (), mouseLeaveCallback: () -> (), inputBeganCallback: () -> (), inputEndedCallback: () -> (), onMouseButton: Enum.UserInputType?)
-            tinsert(manager.ObjectCache,button.MouseEnter:Connect(function()
-                mouseEnterCallback()
-            end))
+				GuiLib.register_Hover_Event(instance.name,function()
+					instance.ImageColor3 = C3_RGB(66, 150, 250);
+					instance.ImageTransparency = 0;
+					isMouseOver = true
+				end,function()
+					if not hasClickedButton then
+						instance.ImageColor3 = if currentMenu==value then C3_RGB(52, 90, 174) else C3_RGB(66, 150, 250);
+						instance.ImageTransparency = if currentMenu==value then 0 else 0.6;
+					end
+					isMouseOver = false
+				end,function()
+					instance.ImageColor3 = C3_RGB(15, 135, 250);
+					instance.ImageTransparency = 0;
+					hasClickedButton = true
+				end,function()
+					currentMenu = value
 
-            tinsert(manager.ObjectCache,button.MouseLeave:Connect(function()
-                mouseLeaveCallback()
-            end))
+					if isMouseOver then
+						instance.ImageColor3 = C3_RGB(66, 150, 250);
+						instance.ImageTransparency = 0;
+					else
+						instance.ImageColor3 = if currentMenu==value then C3_RGB(52, 90, 174) else C3_RGB(66, 150, 250);
+						instance.ImageTransparency = if currentMenu==value then 0 else 0.6;
+					end
+					for key, valueTemp in pairs(menuInfo) do
+						if currentMenu ~= valueTemp then
+							valueTemp.instance.ImageColor3 = C3_RGB(66, 150, 250);
+							valueTemp.instance.ImageTransparency = 0.6;
+							valueTemp.page.Visible=false;
+						end
+					end;
+					page.Visible = true;
+					hasClickedButton = false
+				end)
+			end
+		end
 
-            tinsert(manager.ObjectCache,button.InputBegan:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType[onMouseButton or "MouseButton1"] then
-                    inputBeganCallback()
-                end;
-            end))
+		function GuiLib.register_Hover_Event(button: GuiObject, mouseEnterCallback: () -> (), mouseLeaveCallback: () -> (), inputBeganCallback: () -> (), inputEndedCallback: () -> (), onMouseButton: Enum.UserInputType?)
+			tinsert(manager.ObjectCache,button.MouseEnter:Connect(function()
+				mouseEnterCallback()
+			end))
 
-            tinsert(manager.ObjectCache,button.InputEnded:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType[onMouseButton or "MouseButton1"] then
-                    inputEndedCallback()
-                end;
-            end))
-        end;
+			tinsert(manager.ObjectCache,button.MouseLeave:Connect(function()
+				mouseLeaveCallback()
+			end))
 
-        function init()
-            if gethui then
-                G2L["1"].Parent = gethui()
-            else
-                if syn then
-                    syn.protect_gui(G2L["1"])
-                end
-                G2L["1"].Parent = game:GetService("CoreGui")
-            end;
-        end;
+			tinsert(manager.ObjectCache,button.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType[onMouseButton or "MouseButton1"] then
+					inputBeganCallback()
+				end;
+			end))
 
-        manager.ObjectCache["tablerowbgConsole"] = G2L["33"]
-        manager.ObjectCache["ConsoleTable"] = G2L["31"]
-        GuiLib.create_Menu({{
-            instance=G2L["e"];
-            page=G2L["16"];
-        },{
-            instance=G2L["10"];
-            page=G2L["2d"];
-        },{
-            instance=G2L["12"];
-            page=G2L["3d"];
-        }})
-        return 
-    end;
+			tinsert(manager.ObjectCache,button.InputEnded:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType[onMouseButton or "MouseButton1"] then
+					inputEndedCallback()
+				end;
+			end))
+		end;
+
+		function init()
+			if gethui then
+				G2L["1"].Parent = gethui()
+			else
+				if syn then
+					syn.protect_gui(G2L["1"])
+				end
+				G2L["1"].Parent = game:GetService("CoreGui")
+			end;
+			
+			local movedGui;do
+				function movedGui(name: Instance)
+					
+					
+				end
+			end
+		end;
+
+		manager.ObjectCache["InputBegin"] = G2L["3c"]
+		manager.ObjectCache["tablerowbgConsole"] = G2L["33"]
+		manager.ObjectCache["ConsoleTable"] = G2L["31"]
+		manager.ObjectCache["FilterConsole"] = G2L["38"]
+		GuiLib.create_Menu({{
+			instance=G2L["e"];
+			page=G2L["16"];
+		},{
+			instance=G2L["10"];
+			page=G2L["2d"];
+		},{
+			instance=G2L["12"];
+			page=G2L["3d"];
+		}})
+	end;
     
+    manager.LoadedGui = true;
 end)()

@@ -23,8 +23,9 @@ manager.default = {
             ["help"] = {
                 description = "Show this help message",
                 execute = function()
-                    for command, info in pairs(manager.default.Commands) do
-                        printToConsole(command .. " - " .. info.description)
+                    printToConsole(`Commands:`,nil,true)
+                    for command, info in pairs(manager.default.Console.Commands) do
+                        printToConsole(`- {command:upper()}`,nil,true)
                     end
                 end
             },
@@ -35,6 +36,9 @@ manager.default = {
             ["history"] = {
                 description = "Show command history",
                 execute = function()
+                    for _,cmds in next,getcommandHistory() do
+                        printToConsole(`\t{_}:{cmds}`,nil,true)
+                    end;
                 end
             },
             ["script"] = {
@@ -45,6 +49,20 @@ manager.default = {
             ["set"] = {
                 description = "Set the value of a variable",
                 execute = function(variable, value)
+                    local result: string, VariableName: string
+                    if variable == 'console' and type(value) == 'boolean' then
+                        result = toggleConsole(value) and "enabled" or "disable"
+                        VariableName = 'Console'
+                    elseif variable == 'autoscroll_console' and type(value) == 'boolean' then
+                        result = toggleAutoscrollingConsole(value) and "enabled" or "disable"
+                        VariableName = 'Autoscroll console'
+                    end;
+                    
+                    if VariableName and result then
+                        printToConsole(`{VariableName} has been {result}.`,nil,true)
+                    else
+                        printToConsole("[error] Invalid variable or value.", C3_RGB(192, 64, 64), true)
+                    end;
                 end
             },
             ["get"] = {
@@ -76,7 +94,7 @@ function env.saveConfig(config: table, configFile: string): boolean
 end;
 
 function env.getConfigValue(configFile: table, key: string): string
-    if isfile( :format(configFile)) then
+    if isfile(key:format(configFile)) then
         local success: boolean, configTable: table = pcall(loadfile, directory:format(configFile));
         return configTable[key]
     end;
