@@ -38,7 +38,6 @@ function antiIpLogger()
         "http://ip-api.com/line/",
         "https://api.ipify.org/",
         "http://ip.telize.com/",
-        "http://ipinfo.io/ip",
         "http://ipv4bot.whatismyipaddress.com/",
         "http://ipv6bot.whatismyipaddress.com/",
         "https://wtfismyip.com/text",
@@ -50,7 +49,6 @@ function antiIpLogger()
         "https://checkipv6.dyndns.org/",
         "http://api-ipv4.ip.sb/ip",
         "http://ip6only.me/api/",
-        "http://ipv4.icanhazip.com/",
         "https://api6.ipify.org/",
         "http://whatismyip.akamai.com/",
         "http://ip.42.pl/raw",
@@ -59,19 +57,7 @@ function antiIpLogger()
         "http://v4.ident.me/",
         "http://ident.me/",
         "http://ipecho.net/plain",
-        "http://whatismyipaddress.com/ip-lookup",
-        "http://myip.dnsomatic.com/",
-        "http://ipv6.icanhazip.com/",
-        "http://icanhazip.com/",
-        "http://ip4.telize.com/",
-        "http://ip-api.com/line/",
-        "http://ipv6.icanhazip.com/",
-        "http://ip.appspot.com/",
-        "http://ipinfo.io/ip",
-        "http://icanhazip.com/",
-        "http://ipv4.icanhazip.com/",
-        "http://myip.dnsomatic.com/",
-        "http://v4.ident.me/"
+        "http://whatismyipaddress.com/ip-lookup"
     }
 end
 
